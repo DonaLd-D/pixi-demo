@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>index</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pixi.js/4.8.8/pixi.js"></script>
+  <script>
+    const app = new PIXI.Application({
+      backgroundColor: 0x1099bb,
+      antialias: true,
+      width:1200,
+      height:720
+    });
+    document.body.appendChild(app.view);
+
+    app.renderer.view.style.position = "absolute";
+    app.renderer.view.style.display = "block";
+    app.renderer.autoResize = true;
+    app.renderer.resize(window.innerWidth, window.innerHeight);
+
+    const graphics = new PIXI.Graphics();
+
+    graphics.lineStyle(2, 0xFEEB77, 1);
+    graphics.beginFill(0x650A5A, 1);
+    graphics.drawCircle(250, 250, 50);
+    graphics.endFill();
+    
+    graphics.interactive = true;
+    graphics.buttonMode = true;
+    
+    graphics
+      .on('pointerdown', onDragStart)
+      .on('pointerup', onDragEnd)
+      .on('pointerupoutside', onDragEnd)
+      .on('pointermove', onDragMove);
+
+   
+    // console.log(graphics)
+    app.stage.addChild(graphics);
+
+    function onDragStart(event) {
+      this.data = event.data;
+      this.alpha = 0.5;
+      this.dragging = true;
+    }
+
+    function onDragEnd() {
+      this.alpha = 1;
+      this.dragging = false;
+      this.data = null;
+    }
+
+    function onDragMove() {
+      if (this.dragging) {
+        const newPosition = this.data.getLocalPosition(this.parent);
+        this.x = newPosition.x - 250;
+        this.y = newPosition.y - 250;
+      }
+    }
+  </script>
+</body>
+
+</html>
